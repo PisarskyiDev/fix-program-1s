@@ -32,9 +32,14 @@ def give_command() -> None:
 
     try:
         for command in [command_local, command_roaming]:
-            # result = os.popen(command)
-            temp = os.listdir(command)
-            print(temp)
+            result = os.popen("cd" + " " + command)
+            # show_files = os.popen("dir /W")
+            # show_files = list(os.scandir(path=command))
+            for file in os.scandir(path=command):
+                if file.is_file():
+                    continue
+                else:
+
 
 
     except Exception:
