@@ -15,10 +15,15 @@ def take_right_name(bad_name: str) -> (None, str):
 
 
 def close_program() -> None:
-    os.popen("taskkill /IM 1cv8.exe /F")
-    os.popen("taskkill /IM 1cv8s.exe /F")
-    give_command()
-    exit()
+    try:
+        os.popen("taskkill /IM 1cv8.exe /F")
+        os.popen("taskkill /IM 1cv8s.exe /F")
+        sleep(3)
+    except Exception:
+        pass
+    finally:
+        give_command()
+        exit()
 
 
 def give_command() -> None:
@@ -40,7 +45,6 @@ def give_command() -> None:
                     shutil.rmtree(command + "\\" + name)
         sleep(5)
     except OSError:
-        print("\n")
         print("Возникла ошибка, обратитесь к администратору")
         sleep(5)
         exit()
