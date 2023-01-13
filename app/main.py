@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from sys import exit
 from time import sleep
@@ -14,39 +15,37 @@ def take_right_name(bad_name: str) -> (None, str):
 
 
 def close_program() -> None:
-    try:
-        os.popen("taskkill /IM 1cv8.exe /F")
-        give_command()
-    except Exception:
-        print("Возникла ошибка, процесс не был найден. Обратитесь к администратору")
-        sleep(20)
-        exit()
+    os.popen("taskkill /IM 1cv8.exe /F")
+    os.popen("taskkill /IM 1cv8s.exe /F")
+    give_command()
+    exit()
 
 
 def give_command() -> None:
-    check_user_name = os.popen("echo %userName%")
-    read_user_name = check_user_name.readlines()
-    right_user_name = take_right_name(read_user_name[0])
-    command_local = os.path.join(f"C:", "Users", right_user_name, "AppData", "Local", "1C", "1cv8")
-    command_roaming = os.path.join(f"C:", "Users", right_user_name, "AppData", "Roaming", "1C", "1cv8")
-
+    check_name = os.popen("echo %userName%")
+    read_name = check_name.readlines()
+    right_name = take_right_name(read_name[0])
+    cmd_local = os.path.join(f"C:", "\\", "Users", right_name, "AppData", "Local", "1C", "1cv8")
+    cmd_roaming = os.path.join(f"C:", "\\", "Users", right_name, "AppData", "Roaming", "1C", "1cv8")
     try:
-        for command in [command_local, command_roaming]:
-            result = os.popen("cd" + " " + command)
-            # show_files = os.popen("dir /W")
-            # show_files = list(os.scandir(path=command))
-            for file in os.scandir(path=command):
+        for command in [cmd_local, cmd_roaming]:
+            os.chdir(path="C:\\")
+            os.chdir(path=command)
+
+            for file in os.scandir():
+                name = file.name
                 if file.is_file():
                     continue
                 else:
-
-
-
-    except Exception:
-        print("Возникла ошибка, процесс не был найден. Обратитесь к администратору")
-        sleep(20)
+                    shutil.rmtree(command + "\\" + name)
+        sleep(5)
+    except OSError:
+        print("\n")
+        print("Возникла ошибка, обратитесь к администратору")
+        sleep(5)
         exit()
 
 
 if __name__ == '__main__':
+    print("Запущенно исправление 1С")
     close_program()
